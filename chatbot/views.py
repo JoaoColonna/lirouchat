@@ -6,3 +6,6 @@ def index(request):
 
 def login(request):
     return render(request, 'chatbot/login.html')
+
+def chat(request):
+    return render(request, 'chatbot/chat.html')

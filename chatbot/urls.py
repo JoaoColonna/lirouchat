@@ -1,8 +1,6 @@
 from django.urls import path
-from . import views
+from .api import api
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('login/', views.login, name='login'),
-    path('chat/', views.chat, name='chat')
+    path('api/', api.urls)
 ]

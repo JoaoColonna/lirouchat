@@ -2,9 +2,17 @@ import requests
 import os
 import google.generativeai as genai
 
+generation_config = {
+  "temperature": 1.2,
+  "top_p": 0.95,
+  "top_k": 64,
+  "max_output_tokens": 8192,
+  "response_mime_type": "text/plain",
+}
+
 class GeminiService:
     def __init__(self, api_key):
-        self.api_url = "URL_DA_API_DO_GEMINI"
+        self.api_url = ""
         self.api_key = api_key
         self.generation_config = {
             "temperature": 1,

@@ -16,11 +16,11 @@ class AuthenticationMiddleware:
 
     def __call__(self, request):
         open_endpoints = [
-            "/api/docs", 
-            "/api/openapi.json",
-            "/api/auth/login",
-            "/api/auth/logout",
-            "/api/auth/bearer-auth-test",
+            "/chatbot/api/docs", 
+            "/chatbot/api/openapi.json",
+            "/chatbot/api/auth/login",
+            "/chatbot/api/auth/logout",
+            "/chatbot/api/auth/bearer-auth-test",
             "/admin/"
         ]
 

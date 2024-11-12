@@ -6,4 +6,5 @@ lirouchat/__pycache__/
 .venv
 chatbot/migrations/__pycache__/
 chatbot/schemas/__pycache__/
-chatbot/migrations/__pycache__/__init__.cpython-312.pyc
+chatbot/migrations/__pycache__/
+.env

@@ -29,13 +29,13 @@ SECRET_KEY = 'django-insecure-i@+k8x@7i-b0c1n_b0(vxkl=bha95nxpfyxpi#rlekl1)0u-o5
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost'), 
     '127.0.0.1',
     'localhost',
     'lirouchat-front.vercel.app',
     'colonna.tech',
-    'front.colonna.tech'
-    ]
+    'front.colonna.tech',
+    os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost')
+]
 
 
 # Application definition
@@ -173,11 +173,9 @@ CORS_ALLOW_HEADERS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    os.getenv('DJANGO_ALLOWED_HOSTS'),
-    os.getenv('FRONT_ALLOWED_HOST'),
-    "https://colonna.tech",
     "https://colonna.tech",
     "https://front.colonna.tech",
+    os.getenv('FRONT_ALLOWED_HOST')
 ]
 
 CSRF_COOKIE_SAMESITE = None
@@ -192,5 +190,5 @@ CSRF_TRUSTED_ORIGINS = [
     os.getenv('DJANGO_ALLOWED_HOSTS'),
     os.getenv('FRONT_ALLOWED_HOST'),
     "https://colonna.tech",
-    "https://front.colonna.tech",
+    "https://front.colonna.tech"
 ]

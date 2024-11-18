@@ -83,3 +83,13 @@ class GeminiService:
         except Conversa.DoesNotExist:
             return None
     
+    def get_conversations(self, user):
+        conversations = Conversa.objects.filter(usuario=user)
+        return [
+            {
+                "id": conversation.id,
+                "usuario": conversation.usuario.id,
+                "titulo": conversation.titulo
+            }
+            for conversation in conversations
+        ]

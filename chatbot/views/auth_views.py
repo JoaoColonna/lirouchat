@@ -1,9 +1,15 @@
+from ninja.security import django_auth
 from django.contrib.auth import authenticate, login, logout
+from django.middleware.csrf import get_token
 from ninja import Router
 from chatbot.schemas.auth_schemas import LoginSchema, AuthBearer, ChangePasswordSchema
 from chatbot.schemas.utility_schemas import Error, Result
 
 router = Router()
+
+@router.get("/set-csrf-token", tags=["auth"])
+def set_csrf_token(request):
+    return {"csrftoken": get_token(request)}
 
 @router.post("/login", response={200: Result, 400: Error}, description="Login a user", tags=["auth"])
 def login_user(request, data: LoginSchema):
@@ -20,7 +26,7 @@ def login_user(request, data: LoginSchema):
             "message": "Invalid credentials"
         }
 
-@router.post("/logout", response={200: Result, 400: Error}, description="Logout a user", tags=["auth"])
+@router.post("/logout", response={200: Result, 400: Error}, description="Logout a user", tags=["auth"],  auth=django_auth)
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
@@ -34,7 +40,7 @@ def logout_user(request):
             "message": "You are not logged in"
         }
     
-@router.post("/change-password", response={200: Result, 400: Error}, description="Change user password", tags=["auth"])
+@router.post("/change-password", response={200: Result, 400: Error}, description="Change user password", tags=["auth"],  auth=django_auth)
 def change_password(request, data: ChangePasswordSchema):
     user = authenticate(request, username=request.user.username, password=data.password)
     if user is not None and request.user.id == user.id:
@@ -55,8 +61,19 @@ def change_password(request, data: ChangePasswordSchema):
             "message": "Invalid password"
         }
 
+@router.get("/user", auth=django_auth, tags=["auth"], response={200: dict}, description="Get user information")
+def user(request):
+    secret_fact = (
+        "The moment one gives close attention to any thing, even a blade of grass",
+        "it becomes a mysterious, awesome, indescribably magnificent world in itself."
+    )
+    return {
+        "username": request.user.username,
+        "email": request.user.email,
+        "secret_fact": secret_fact
+    }
     
-@router.get("/auth-test", tags=["auth"])
+@router.get("/auth-test", tags=["auth"],  auth=django_auth)
 def auth_user_test(request):
     return {
         "status": "success", 

@@ -35,3 +35,9 @@ def get_conversation_title(request, conversation_id: int):
         return 400, {"error": "Conversation not found"}
     
     return {"conversa": conversa}
+
+@router.get("/conversations", response={200: dict, 400: Error}, description="Get all conversations", tags=["chat"])
+def get_conversations(request):
+    _geminiService = GeminiService()
+    conversas = _geminiService.get_conversations(request.user)
+    return {"conversas": conversas}

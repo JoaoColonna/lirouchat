@@ -63,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'chatbot.middleware.AuthenticationMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'lirouchat.urls'
@@ -132,9 +133,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Diretório onde os arquivos estáticos serão coletados
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
@@ -179,10 +180,10 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_COOKIE_SAMESITE = None
-CSRF_COOKIE_SECURE = os.getenv('production')
+CSRF_COOKIE_SECURE = os.getenv('production', True)
 
 SESSION_COOKIE_SAMESITE = None
-SESSION_COOKIE_SECURE = os.getenv('production')
+SESSION_COOKIE_SECURE = os.getenv('production', True)
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",

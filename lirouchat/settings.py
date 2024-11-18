@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +28,18 @@ SECRET_KEY = 'django-insecure-i@+k8x@7i-b0c1n_b0(vxkl=bha95nxpfyxpi#rlekl1)0u-o5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost'), '127.0.0.1']
+ALLOWED_HOSTS = [
+    os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost'), 
+    '127.0.0.1',
+    'localhost',
+    'lirouchat-front.vercel.app',
+    'colonna.tech'
+    ]
 
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [  ''
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chatbot',
-    # 'corsheaders',
+    'corsheaders',
+    'ninja',
 ]
 
 MIDDLEWARE = [
@@ -163,10 +173,20 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     os.getenv('DJANGO_ALLOWED_HOSTS'),
+    os.getenv('FRONT_ALLOWED_HOST'),
+    "https://colonna.tech",
 ]
 
-# CSRF_COOKIE_SAMESITE = 'None'
-# CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = None
+CSRF_COOKIE_SECURE = os.getenv('production')
 
-# SESSION_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_SECURE = os.getenv('production')
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    os.getenv('DJANGO_ALLOWED_HOSTS'),
+    os.getenv('FRONT_ALLOWED_HOST'),
+    "https://colonna.tech",
+]

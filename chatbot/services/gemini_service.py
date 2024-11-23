@@ -3,7 +3,6 @@ import os
 import google.generativeai as genai
 from chatbot.models import Conversa, Mensagem
 from chatbot.schemas.gemini_schemas import RespostaMensagem
-from asgiref.sync import async_to_sync
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -65,7 +64,7 @@ class GeminiService:
             conversation = Conversa.objects.get(id=conversa_id)
             messages = Mensagem.objects.filter(conversa=conversation).order_by('criada_em')
             history = [
-                {"role": "user" if msg.usuario else "model", "parts": msg.conteudo}
+                {"role": "user" if msg.is_user else "model", "parts": msg.conteudo}
                 for msg in messages
             ]
             return history
@@ -78,18 +77,25 @@ class GeminiService:
             return {
                 "id": conversation.id,
                 "usuario": conversation.usuario.id,
-                "titulo": conversation.titulo
+                "titulo": conversation.titulo,
+                "criada_em": conversation.criada_em
             }
         except Conversa.DoesNotExist:
             return None
     
     def get_conversations(self, user):
-        conversations = Conversa.objects.filter(usuario=user)
+        conversations = Conversa.objects.filter(usuario=user).order_by('-criada_em')
         return [
             {
                 "id": conversation.id,
                 "usuario": conversation.usuario.id,
-                "titulo": conversation.titulo
+                "titulo": conversation.titulo,
+                "criada_em": conversation.criada_em
             }
             for conversation in conversations
         ]
+    
+    def just_send_message(self, message, user, conversa_id=None):
+        response = self.model.generate_content("Oá, tudo bem por aí?")
+        resposta = RespostaMensagem(conversa_id=0, resposta=response.text)
+        return resposta

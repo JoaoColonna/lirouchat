@@ -19,6 +19,7 @@ class AuthenticationMiddleware:
             "/chatbot/api/docs", 
             "/chatbot/api/openapi.json",
             "/static/",
+            "/staticfiles/",
             "/chatbot/api/auth/login",
             "/chatbot/api/auth/logout",
             "/chatbot/api/auth/bearer-auth-test",

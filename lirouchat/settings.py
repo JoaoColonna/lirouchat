@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     'lirouchat-front.vercel.app',
     'colonna.tech',
     'front.colonna.tech',
+    "lirouchat-front.colonna.tech",
     os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost')
 ]
 
@@ -173,6 +174,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://colonna.tech",
+    "https://lirouchat.colonna.tech",
+    "https://lirouchat-front.colonna.tech",
     "https://front.colonna.tech",
     os.getenv('FRONT_ALLOWED_HOST')
 ]
@@ -188,6 +191,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:3000",
     os.getenv('DJANGO_ALLOWED_HOSTS'),
     os.getenv('FRONT_ALLOWED_HOST'),
+    "https://lirouchat.colonna.tech",
     "https://colonna.tech",
+    "https://lirouchat-front.colonna.tech",
     "https://front.colonna.tech"
 ]

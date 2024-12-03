@@ -22,6 +22,7 @@ class AuthenticationMiddleware:
             "/staticfiles/",
             "/chatbot/api/auth/login",
             "/chatbot/api/auth/logout",
+            "/chatbot/api/users/create",
             "/chatbot/api/auth/bearer-auth-test",
             "/chatbot/api/auth/set-crsf-token",
             "/chatbot/api/auth/",

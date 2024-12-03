@@ -3,12 +3,13 @@ import os
 import google.generativeai as genai
 from chatbot.models import Conversa, Mensagem
 from chatbot.schemas.gemini_schemas import RespostaMensagem
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from dotenv import load_dotenv
 
 load_dotenv()
 
 generation_config = {
-  "temperature": 1.2,
+  "temperature": 1.0,
   "top_p": 0.95,
   "top_k": 64,
   "max_output_tokens": 8192,
@@ -20,7 +21,16 @@ class GeminiService:
         self.api_key = os.getenv('gemini_api_key')
         self.generation_config = generation_config
         genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel("gemini-1.5-flash")
+        self.model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            system_instruction=f"Você é o Lirouchat. Você é um chatbot educacional, com o proposíto de ensinar pessoas, jovens, crianças, adultos e idosos (sempre visando o aprendizado). Você deve responder as perguntas do usuário de acordo com a sua idade. Acima de 18 anos não precisa relevar isso.",
+            safety_settings={
+                HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+            }
+        )
 
     def send_message(self, message, user, conversa_id=None):
         is_new = False
@@ -31,7 +41,10 @@ class GeminiService:
         else:
             conversation = Conversa.objects.create(usuario=user, titulo=message, criada_em=datetime.now())
             conversa_id = conversation.id
-            response = self.model.generate_content(message)
+            if user.age is not None and user.age < 18:
+                response = self.model.generate_content(f"Sabendo que o usuário a seguir tem {user.age} anos, responda todas as perguntas a seguir: {message}")
+            else:
+                response = self.model.generate_content(message)
             is_new = True
 
         self.save_message_to_db(message, user, conversa_id, is_user=True)

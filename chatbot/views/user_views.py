@@ -11,7 +11,7 @@ def create_user(request, data: UserCreateSchema):
             "status": "error",
             "message": "Username already exists"
         }
-    user = CustomUser.objects.create_user(username=data.username, password=data.password, email=data.email)
+    user = CustomUser.objects.create_user(username=data.username, password=data.password, email=data.email, age=data.age)  # Usar CustomUser
     return user
 
 @router.put("/update/{user_id}", response={200: dict, 404: Error, 403: Error}, description="Update an existing user", tags=["users"])

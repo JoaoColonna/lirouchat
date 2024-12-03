@@ -10,6 +10,7 @@ class UserCreateSchema(Schema):
     username: str
     password: str
     email: str
+    age: int = None
 
 class UserUpdateSchema(Schema):
     username: str

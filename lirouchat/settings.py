@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     'lirouchat-front.vercel.app',
     'colonna.tech',
     'front.colonna.tech',
-    "lirouchat-front.colonna.tech",
+    "lirouchat.colonna.tech",
     os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost')
 ]
 

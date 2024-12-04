@@ -14,6 +14,9 @@ def set_csrf_token(request):
 @router.post("/login", response={200: Result, 400: Error}, description="Login a user", tags=["auth"])
 def login_user(request, data: LoginSchema):
     user = authenticate(request, username=data.username, password=data.password)
+    if user is None:
+        user = authenticate(request, email=data.username, password=data.password)
+    
     if user is not None:
         login(request, user)
         return {

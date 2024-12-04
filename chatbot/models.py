@@ -33,3 +33,4 @@ class Teste(models.Model):
     texto  = models.TextField()
     criado_em = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='testes')
+    conversa = models.ForeignKey(Conversa, on_delete=models.CASCADE, related_name='testes', null=True)

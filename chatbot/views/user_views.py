@@ -14,34 +14,29 @@ def create_user(request, data: UserCreateSchema):
     user = CustomUser.objects.create_user(username=data.username, password=data.password, email=data.email, age=data.age)  # Usar CustomUser
     return user
 
-@router.put("/update/{user_id}", response={200: dict, 404: Error, 403: Error}, description="Update an existing user", tags=["users"])
-def update_user(request, user_id: int, data: UserUpdateSchema):
-    if request.user.is_authenticated and request.user.id != user_id:
-        return 403, {
-            "status": "error",
-            "message": "You don't have permission to update this user"
-        }
-    try:
-        user = CustomUser.objects.get(id=user_id)  # Usar CustomUser
-        user.username = data.username
-        user.email = data.email
-        user.age = data.age
-        user.save()
-        return 200, {
-            "status": "success",
-            "message": "Informações atualizadas com sucesso!",
-            "data": {
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-                "age": user.age
+@router.put("/update", response={200: dict, 404: Error, 403: Error}, description="Update an existing user", tags=["users"])
+def update_user(request, data: UserUpdateSchema):
+    if request.user.is_authenticated and request.user.id is not None:    
+        try:
+            user = CustomUser.objects.get(id=request.user.id)  # Usar CustomUser
+            user.username = data.username
+            user.email = data.email
+            user.age = data.age
+            user.save()
+            return 200, {
+                "status": "success",
+                "message": "Informações atualizadas com sucesso!",
+                "data": {
+                    "username": user.username,
+                    "email": user.email,
+                    "age": user.age
+                }
             }
-        }
-    except CustomUser.DoesNotExist:
-        return 404, {
-            "status": "error",
-            "message": "User not found"
-        }
+        except CustomUser.DoesNotExist:
+            return 404, {
+                "status": "error",
+                "message": "User not found"
+            }
 
 
 @router.delete("/delete/{user_id}", response={200: dict, 404: Error}, description="Delete a user", tags=["users"])

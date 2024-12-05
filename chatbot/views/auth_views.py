@@ -73,7 +73,8 @@ def user(request):
     return {
         "username": request.user.username,
         "email": request.user.email,
-        "secret_fact": secret_fact
+        "secret_fact": secret_fact,
+        "age" : request.user.age
     }
     
 @router.get("/auth-test", tags=["auth"],  auth=django_auth)

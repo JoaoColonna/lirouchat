@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser
+from .models import CustomUser, Mensagem, Conversa, TipoMensagem, Teste
 
 class CustomUserAdmin(UserAdmin):
     list_display = (
@@ -44,4 +44,25 @@ class CustomUserAdmin(UserAdmin):
     )
 
 admin.site.register(CustomUser, CustomUserAdmin)
-# Register your models here.
+
+@admin.register(Mensagem)
+class MensagemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'conteudo', 'criada_em', 'conversa', 'usuario', 'is_user', 'id_tipo_mensagem__nome')
+    search_fields = ('conteudo', 'usuario__username')
+    list_filter = ('criada_em', 'conversa')
+
+@admin.register(Conversa)
+class ConversaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'criada_em')
+    search_fields = ('nome',)
+    list_filter = ('criada_em',)
+
+@admin.register(TipoMensagem)
+class TipoMensagemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome')
+    search_fields = ('nome',)
+
+@admin.register(Teste)
+class TesteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'titulo', 'texto')
+    search_fields = ('nome', 'texto')

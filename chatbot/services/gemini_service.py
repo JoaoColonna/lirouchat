@@ -48,8 +48,10 @@ class GeminiService:
                 response = self.model.generate_content(message)
             is_new = True
 
-        self.save_message_to_db(message, user, conversa_id, is_user=True)
-        self.save_message_to_db(response.text, user, conversa_id, is_user=False)
+        tipo_mensagem = TipoMensagem.objects.get(nome='conversa')
+
+        self.save_message_to_db(message, user, conversa_id, is_user=True, tipo_mensagem=tipo_mensagem)
+        self.save_message_to_db(response.text, user, conversa_id, is_user=False, tipo_mensagem=tipo_mensagem)
         
         if is_new:
             self.update_title_conversation(conversa_id, message)
@@ -117,7 +119,7 @@ class GeminiService:
         conversa_id = conversation.id
         tipo_mensagem = TipoMensagem.objects.get(nome='teste')
         self.save_message_to_db(response.text, user, conversa_id, is_user=False, tipo_mensagem=tipo_mensagem)
-        Teste.objects.create(usuario=user, texto=type_test, criado_em=datetime.now(), conversa=conversation)
+        Teste.objects.create(usuario=user, titulo=type_test, texto=response.text, criado_em=datetime.now(), conversa=conversation)
         return TesteMensagem(conversa_id=conversa_id, resposta=response.text)
     
     def answer_questions(self, user, conversa_id, message):
